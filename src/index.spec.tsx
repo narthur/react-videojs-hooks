@@ -1,14 +1,18 @@
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { VideoJsProvider, Video } from "./index";
+import videojs from "video.js";
+import { vitest } from "vitest";
+
+vitest.mock("video.js");
 
 describe("library", () => {
-  it("works", () => {
+  it("loads videojs", async () => {
     render(
       <VideoJsProvider>
-        <Video />
+        <Video src="https://example.com/oceans.mp4" />
       </VideoJsProvider>
     );
 
-    expect(true).toBe(true);
+    await waitFor(() => expect(videojs).toBeCalled());
   });
 });
