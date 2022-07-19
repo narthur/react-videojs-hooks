@@ -1,3 +1,6 @@
-export default function useVideoJs() {
-  return 'hello world'
+export function VideoJsProvider({children}: any) {
+  return <></>
+}
+export function Video() {
+  return <></>
 }
