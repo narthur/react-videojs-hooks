@@ -1,69 +1,8 @@
-import { render, waitFor, screen } from "@testing-library/react";
-import { Video } from "./index";
-import videojs, { VideoJsPlayer } from "video.js";
-import { Mock, vitest } from "vitest";
-import { useState } from "react";
 import fetch from "cross-fetch";
 
-vitest.mock("video.js");
-
-const mockVjs = videojs as unknown as Mock;
-mockVjs.mockRestore();
-
-const getPlayer = async (): Promise<VideoJsPlayer> => {
-  await waitFor(() => expect(mockVjs).toBeCalled());
-
-  return mockVjs.mock.results[0].value as VideoJsPlayer;
-};
-
 describe("library", () => {
-  it("loads videojs", async () => {
-    render(<Video />);
-
-    await waitFor(() => expect(videojs).toBeCalled());
-  });
-
-  it("can access sample video", async () => {
-    const C = () => {
-      const [result, setResult] = useState("not loaded");
-
-      void fetch("https://api.mock/oceans.mp4").then(() => {
-        setResult("loaded");
-      });
-
-      return <>{result}</>;
-    };
-
-    render(<C />);
-
-    expect(await screen.findByText("loaded"));
-  });
-
-  it("can make mocked network requests", async () => {
+  it("can make network requests", async () => {
     await fetch("https://api.mock/hello");
-  });
-
-  it("loads source", async () => {
-    render(
-      <Video>
-        <source src="https://api.mock/oceans.mp4" type="video/mp4" />
-      </Video>
-    );
-
-    const player = await getPlayer();
-
-    await waitFor(() => {
-      expect(player.src()).toEqual("https://api.mock/oceans.mp4");
-    });
-  });
-
-  it("picks up autoplay attribute", async () => {
-    render(<Video autoPlay />);
-
-    const player = await getPlayer();
-
-    await waitFor(() => {
-      expect(player.autoplay()).toEqual(true);
-    });
+    await fetch("https://api.mock/oceans.mp4");
   });
 });
