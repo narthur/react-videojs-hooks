@@ -1,5 +1,5 @@
 import { render, waitFor, screen } from "@testing-library/react";
-import { Video, VideoJsProvider } from "./index";
+import { Video } from "./index";
 import videojs, { VideoJsPlayer } from "video.js";
 import { Mock, vitest } from "vitest";
 import { useState } from "react";
@@ -18,11 +18,7 @@ const getPlayer = async (): Promise<VideoJsPlayer> => {
 
 describe("library", () => {
   it("loads videojs", async () => {
-    render(
-      <VideoJsProvider>
-        <Video />
-      </VideoJsProvider>
-    );
+    render(<Video />);
 
     await waitFor(() => expect(videojs).toBeCalled());
   });
@@ -49,11 +45,9 @@ describe("library", () => {
 
   it("loads source", async () => {
     render(
-      <VideoJsProvider>
-        <Video>
-          <source src="https://api.mock/oceans.mp4" type="video/mp4" />
-        </Video>
-      </VideoJsProvider>
+      <Video>
+        <source src="https://api.mock/oceans.mp4" type="video/mp4" />
+      </Video>
     );
 
     const player = await getPlayer();
@@ -64,13 +58,7 @@ describe("library", () => {
   });
 
   it("picks up autoplay attribute", async () => {
-    render(
-      <VideoJsProvider>
-        <Video autoPlay>
-          <source src="https://api.mock/oceans.mp4" type="video/mp4" />
-        </Video>
-      </VideoJsProvider>
-    );
+    render(<Video autoPlay />);
 
     const player = await getPlayer();
 
