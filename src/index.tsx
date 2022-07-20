@@ -5,14 +5,17 @@ export function VideoJsProvider({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 
+const vjsRef = (el: HTMLVideoElement) => {
+  if (!el) return;
+  videojs(el);
+};
+
 export function Video(props: HTMLProps<HTMLVideoElement>) {
+  const digest = JSON.stringify(props);
+
   return (
-    <video
-      ref={(el: HTMLVideoElement) => {
-        if (!el) return;
-        videojs(el);
-      }}
-      {...props}
-    />
+    <div data-vjs-player={true} key={digest}>
+      <video ref={vjsRef} {...props} />
+    </div>
   );
 }
