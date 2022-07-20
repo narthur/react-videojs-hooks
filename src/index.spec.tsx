@@ -10,11 +10,17 @@ vitest.mock("video.js");
 const mockVjs = videojs as unknown as Mock;
 mockVjs.mockRestore();
 
+const getPlayer = async (): Promise<VideoJsPlayer> => {
+  await waitFor(() => expect(mockVjs).toBeCalled());
+
+  return mockVjs.mock.results[0].value as VideoJsPlayer;
+};
+
 describe("library", () => {
   it("loads videojs", async () => {
     render(
       <VideoJsProvider>
-        <Video src="https://api.mock/oceans.mp4" />
+        <Video />
       </VideoJsProvider>
     );
 
@@ -50,12 +56,26 @@ describe("library", () => {
       </VideoJsProvider>
     );
 
-    await waitFor(() => expect(mockVjs).toBeCalled());
-
-    const player = mockVjs.mock.results[0].value as VideoJsPlayer;
+    const player = await getPlayer();
 
     await waitFor(() => {
       expect(player.src()).toEqual("https://api.mock/oceans.mp4");
+    });
+  });
+
+  it("picks up autoplay attribute", async () => {
+    render(
+      <VideoJsProvider>
+        <Video autoPlay>
+          <source src="https://api.mock/oceans.mp4" type="video/mp4" />
+        </Video>
+      </VideoJsProvider>
+    );
+
+    const player = await getPlayer();
+
+    await waitFor(() => {
+      expect(player.autoplay()).toEqual(true);
     });
   });
 });
