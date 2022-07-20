@@ -8,7 +8,7 @@ const resolver = (
   res: ResponseComposition,
   ctx: RestContext
 ) => {
-  const vid = fs.readFileSync("./src/__mocks__/sample.mp4", "binary");
+  const vid = fs.readFileSync("./__mocks__/sample.mp4", "binary");
 
   return res(
     ctx.status(200),
