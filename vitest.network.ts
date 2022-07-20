@@ -18,10 +18,10 @@ const resolveVideo = (
 };
 
 export const restHandlers = [
-  rest.get("https://api.mock/hello", (req, res, ctx) => {
+  rest.get("https://network.mock/hello", (req, res, ctx) => {
     return res(ctx.status(200), ctx.body("Hello World!"));
   }),
-  rest.get("https://api.mock/*.mp4", resolveVideo),
+  rest.get("https://network.mock/*.mp4", resolveVideo),
 ];
 
 const server = setupServer(...restHandlers);

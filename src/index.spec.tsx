@@ -2,7 +2,7 @@ import fetch from "cross-fetch";
 
 describe("library", () => {
   it("can make network requests", async () => {
-    await fetch("https://api.mock/hello");
-    await fetch("https://api.mock/oceans.mp4");
+    await fetch("https://network.mock/hello");
+    await fetch("https://network.mock/oceans.mp4");
   });
 });

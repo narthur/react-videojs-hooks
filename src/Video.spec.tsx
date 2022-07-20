@@ -24,14 +24,14 @@ describe("Video", () => {
   it("loads source", async () => {
     render(
       <Video>
-        <source src="https://api.mock/oceans.mp4" type="video/mp4" />
+        <source src="https://network.mock/oceans.mp4" type="video/mp4" />
       </Video>
     );
 
     const player = await getPlayer();
 
     await waitFor(() => {
-      expect(player.src()).toEqual("https://api.mock/oceans.mp4");
+      expect(player.src()).toEqual("https://network.mock/oceans.mp4");
     });
   });
 
