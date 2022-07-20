@@ -1,17 +1,7 @@
 import { render, waitFor } from "@testing-library/react";
 import Video from "./Video";
-import videojs, { VideoJsPlayer } from "video.js";
-import { Mock, vi } from "vitest";
-
-vi.mock("video.js");
-
-const mockVjs = videojs as unknown as Mock;
-
-const getPlayer = async (): Promise<VideoJsPlayer> => {
-  await waitFor(() => expect(mockVjs).toBeCalled());
-
-  return mockVjs.mock.results[0].value as VideoJsPlayer;
-};
+import videojs from "video.js";
+import getPlayer from "../lib/test/getPlayer";
 
 describe("Video", () => {
   it("loads videojs", async () => {

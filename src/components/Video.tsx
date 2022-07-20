@@ -1,13 +1,18 @@
 import videojs from "video.js";
-import { HTMLProps } from "react";
-
-const vjsRef = (el: HTMLVideoElement) => {
-  if (!el) return;
-  videojs(el);
-};
+import { HTMLProps, useCallback, useContext } from "react";
+import { VideoJsContext } from "./VideoJsProvider";
 
 export default function Video(props: HTMLProps<HTMLVideoElement>) {
+  const context = useContext(VideoJsContext);
   const digest = JSON.stringify(props);
+
+  const vjsRef = useCallback(
+    (el: HTMLVideoElement) => {
+      if (!el) return;
+      videojs(el, context);
+    },
+    [context]
+  );
 
   return (
     <div data-vjs-player={true} key={digest}>

@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
-    setupFiles: ["./vitest.network.ts"],
+    setupFiles: ["./vitest.network.ts", "./vitest.setup.ts"],
     environment: "jsdom",
     restoreMocks: true,
   },
