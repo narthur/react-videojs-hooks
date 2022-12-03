@@ -1,22 +1,25 @@
-import videojs from "video.js";
-import { HTMLProps, useCallback, useContext } from "react";
+import { HTMLProps, useContext, useEffect } from "react";
 import { VideoJsContext } from "./VideoJsProvider";
+import useVideoReducer from "./Video.reducer";
 
 export default function Video(props: HTMLProps<HTMLVideoElement>) {
-  const context = useContext(VideoJsContext);
-  const digest = JSON.stringify(props);
+  const options = useContext(VideoJsContext);
+  const digest = JSON.stringify({ ...options, ...props });
 
-  const vjsRef = useCallback(
-    (el: HTMLVideoElement) => {
-      if (!el) return;
-      videojs(el, context);
-    },
-    [context]
-  );
+  const [state, dispatch] = useVideoReducer({
+    options,
+    props,
+  });
 
-  return (
-    <div data-vjs-player={true} key={digest}>
-      <video ref={vjsRef} {...props} />
-    </div>
-  );
+  useEffect(() => {
+    dispatch({
+      type: "UPDATE",
+      payload: {
+        options,
+        props,
+      },
+    });
+  }, [dispatch, options, props]);
+
+  return <div ref={state.ref} />;
 }
